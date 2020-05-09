@@ -1,5 +1,8 @@
 package guru.springframework.spring5webapp.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,12 +24,11 @@ public class Book {
     @ManyToMany
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"),
                inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private String author;
+    private Set<Author> authors = new HashSet<>();
 
-    public Book(String title, String isbn, String author) {
+    public Book(String title, String isbn) {
         this.title = title;
         this.isbn = isbn;
-        this.author = author;
     }
 
     public Book() {
@@ -48,12 +50,12 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public String getAuthor() {
-        return author;
+    public Set<Author> getAuthors() {
+        return authors;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
     }
 
     public Long getId() {
@@ -62,6 +64,26 @@ public class Book {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Book book = (Book) o;
+
+        return id != null ? id.equals(book.id) : book.id == null;
+    }
+
+    @Override
+    public String toString() {
+        return "Book [authors=" + authors + ", id=" + id + ", isbn=" + isbn + ", title=" + title + "]";
     }
     
 }
