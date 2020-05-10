@@ -5,18 +5,22 @@ import org.springframework.stereotype.Component;
 
 import guru.springframework.spring5webapp.domain.Author;
 import guru.springframework.spring5webapp.domain.Book;
+import guru.springframework.spring5webapp.domain.Publisher;
 import guru.springframework.spring5webapp.repositories.AuthorRepository;
 import guru.springframework.spring5webapp.repositories.BookRepository;
+import guru.springframework.spring5webapp.repositories.PublisherRepository;
 
 @Component
 public class BootStrapData implements CommandLineRunner {
 
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
+    private final PublisherRepository publisherRepository;
 
-    public BootStrapData(AuthorRepository authorRepository, BookRepository bookRepository) {
+    public BootStrapData(AuthorRepository authorRepository, BookRepository bookRepository, PublisherRepository publisherRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
+        this.publisherRepository = publisherRepository;
     }
     
     @Override
@@ -37,7 +41,12 @@ public class BootStrapData implements CommandLineRunner {
         bookRepository.save(noEJB);
 
         System.out.println("Started in Bootstrap");
-        System.out.println("Humber of books: " + bookRepository.count());
+        System.out.println("Number of books: " + bookRepository.count());
+
+        Publisher randomHouse = new Publisher("Random House", "1313 Mockinbird Ln", "Anytown", "Pa", 12345);
+        publisherRepository.save(randomHouse);
+
+        System.out.println("Number of publishers: " + publisherRepository.count());
     }
 
 }
